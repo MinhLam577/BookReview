@@ -4,9 +4,7 @@ import {
     Route,
     useLocation,
 } from "react-router-dom";
-import { Toaster } from "react-hot-toast";
 import { AnimatePresence } from "motion/react";
-import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
 import BookDetail from "./pages/BookDetail";
 import Profile from "./pages/Profile";
