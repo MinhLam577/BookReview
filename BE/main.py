@@ -17,8 +17,15 @@ app.include_router(auth.router)
 app.include_router(book.router)
 app.include_router(user.router)
 
+import os
+import uvicorn
+
 if __name__ == "__main__":
-    try:
-        uvicorn.run("main:app", host="localhost", port=6789, reload=True)
-    except Exception:
-        traceback.print_exc()
+    port = int(os.environ.get("PORT", 6789))
+    
+    uvicorn.run(
+        "main:app", 
+        host="0.0.0.0", 
+        port=port, 
+        reload=True
+    )
