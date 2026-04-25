@@ -20,8 +20,6 @@ export default function BookDetail() {
     const [hoverRating, setHoverRating] = useState(0);
     const [reviewContent, setReviewContent] = useState("");
 
-    if (!book) return <div className="p-24 text-center">Book not found</div>;
-
     const handleSubmitReview = (e: React.FormEvent) => {
         e.preventDefault();
         if (rating === 0) {

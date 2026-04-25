@@ -1,45 +1,47 @@
 import { Search, User, BookOpen, Menu, X } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { currentUser } from "../data/mockData";
 import { useMe } from "../hooks/useMe";
 import { useDebounce } from "../hooks/useDebounce";
 
 export default function Navbar() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
-    const [searchQuery, setSearchQuery] = useState("");
     const navigate = useNavigate();
 
     const { data: user } = useMe();
+    const [searchQuery, setSearchQuery] = useState(() => {
+        const params = new URLSearchParams(window.location.search);
+        return params.get("search") || "";
+    });
 
-    const debounced = useDebounce(searchQuery, 400);
-    // sync input với URL (khi reload / back)
+    // Đồng bộ hóa State khi URL thay đổi
     useEffect(() => {
         const params = new URLSearchParams(location.search);
-        const search = params.get("search") || "";
-        setSearchQuery(search);
+        const searchFromUrl = params.get("search") || "";
+        if (searchFromUrl !== searchQuery) {
+            setSearchQuery(searchFromUrl);
+        }
     }, [location.search]);
 
-    // debounce → update URL
+    const debounced = useDebounce(searchQuery, 400);
     useEffect(() => {
         const params = new URLSearchParams(location.search);
-        const currentSearch = params.get("search") || "";
+        const currentSearchParam = params.get("search") || "";
 
-        // nếu giống thì không làm gì
-        if (debounced === currentSearch) return;
+        if (debounced === currentSearchParam) return;
 
         if (!debounced.trim()) {
-            // search rỗng → xoá param
             navigate("/explore", { replace: true });
         } else {
-            navigate(`/explore?search=${encodeURIComponent(debounced)}`, {
-                replace: true,
-            });
+            navigate(
+                `/explore?search=${encodeURIComponent(debounced.trim())}`,
+                {
+                    replace: true,
+                }
+            );
         }
-    }, [debounced, location.pathname, location.search, navigate]);
-    const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-    };
+    }, [debounced, navigate]);
+
     return (
         <nav className="glass-nav">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -122,7 +124,10 @@ export default function Navbar() {
             {/* Mobile Menu */}
             {isMenuOpen && (
                 <div className="md:hidden bg-white border-t border-black/5 px-4 py-6 space-y-6 animate-in slide-in-from-top duration-300">
-                    <form className="relative w-full" onSubmit={handleSubmit}>
+                    <form
+                        className="relative w-full"
+                        onSubmit={(e) => e.preventDefault()}
+                    >
                         <input
                             type="text"
                             placeholder="Search..."

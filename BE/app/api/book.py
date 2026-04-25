@@ -30,4 +30,4 @@ def get_books(
   
 @router.get("/categories")
 def get_categories(db: Session = Depends(get_db)):
-    return list(set([b.category for b in db.query(Book).all()]))
+    return [ "All" ] + list(set([b.category for b in db.query(Book).all()]))

@@ -12,9 +12,8 @@ export async function getBooks(category?: string, search?: string) {
     if (search) {
         params.append("search", search);
     }
-    const res = await fetchAPI<ApiResponse<Book[]>>(
-        `/books?${params.toString()}`
-    );
+    const query = params.toString() ? `/books?${params.toString()}` : "/books";
+    const res = await fetchAPI<ApiResponse<Book[]>>(query);
     return (res?.data || res) as Book[];
 }
 

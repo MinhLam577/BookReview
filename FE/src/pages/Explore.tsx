@@ -11,10 +11,11 @@ export default function Explore() {
 
     const [selectedCategory, setSelectedCategory] = useState("All");
 
-    const { data: books = [], isLoading } = useBooks(selectedCategory, search);
-    let { data: categories = [], isLoading: isLoadingCategories } =
+    const { data: categories = [], isLoading: isLoadingCategories } =
         useCategories();
-    if (!isLoadingCategories) categories = ["All", ...categories];
+
+    const { data: books = [], isLoading } = useBooks(selectedCategory, search);
+
     const skeletonItems = Array.from({ length: 8 });
     return (
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
@@ -24,21 +25,23 @@ export default function Explore() {
                 </h1>
 
                 {/* Categories */}
-                <div className="flex flex-wrap gap-3">
-                    {categories.map((cat) => (
-                        <button
-                            key={cat}
-                            onClick={() => setSelectedCategory(cat)}
-                            className={`cursor-pointer px-6 py-2.5 rounded-full text-sm font-bold transition-all ${
-                                selectedCategory === cat
-                                    ? "bg-brand-primary text-white shadow-lg"
-                                    : "bg-white border border-black/5 hover:border-black/20"
-                            }`}
-                        >
-                            {cat}
-                        </button>
-                    ))}
-                </div>
+                <Skeleton loading={isLoading} active paragraph={{ rows: 2 }}>
+                    <div className="flex flex-wrap gap-3">
+                        {categories.map((cat) => (
+                            <button
+                                key={cat}
+                                onClick={() => setSelectedCategory(cat)}
+                                className={`cursor-pointer px-6 py-2.5 rounded-full text-sm font-bold transition-all ${
+                                    selectedCategory === cat
+                                        ? "bg-brand-primary text-white shadow-lg"
+                                        : "bg-white border border-black/5 hover:border-black/20"
+                                }`}
+                            >
+                                {cat}
+                            </button>
+                        ))}
+                    </div>
+                </Skeleton>
             </div>
             {isLoading ? (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
