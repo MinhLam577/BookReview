@@ -2,7 +2,6 @@ import { useParams } from "react-router-dom";
 import React, { useState } from "react";
 import { motion } from "motion/react";
 import { Star, MessageSquare, Bookmark, Share2, Plus } from "lucide-react";
-import { mockBooks, currentUser } from "../data/mockData";
 import RatingStars from "../components/RatingStars";
 import ReviewCard from "../components/ReviewCard";
 import Modal from "../components/Modal";

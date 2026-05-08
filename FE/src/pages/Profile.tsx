@@ -1,6 +1,5 @@
 import { motion } from "motion/react";
-import { Settings, MapPin, Calendar, Mail } from "lucide-react";
-import { mockBooks } from "../data/mockData";
+import { MapPin, Calendar, Mail } from "lucide-react";
 import ReviewCard from "../components/ReviewCard";
 import { useMe } from "../hooks/useMe";
 import { useNavigate } from "react-router-dom";
